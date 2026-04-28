@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meteo Dashboard Pro</title>
+    <!-- Leaflet CSS per la mappa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Font Awesome per le icone -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar / Header Mobile -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-cloud-bolt"></i>
+                <span>MeteoPro</span>
+            </div>
+
+            <div class="search-box">
+                <input type="text" id="cityInput" placeholder="Cerca città...">
+                <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-view="dashboard">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </button>
+                <button class="nav-item" data-view="map">
+                    <i class="fa-solid fa-map"></i> Mappa
+                </button>
+                <button class="nav-item" data-view="alerts">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Allerte
+                </button>
+            </nav>
+
+            <div class="user-location">
+                <button id="geoBtn" title="La mia posizione">
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="location-info">
+                    <h1 id="locationName">Roma, IT</h1>
+                    <p id="lastUpdate">Aggiornato: --:--</p>
+                </div>
+                <div class="actions">
+                    <button id="refreshBtn" class="btn-icon" title="Aggiorna Dati">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <button id="alertToggle" class="btn-alert" title="Vedi Allerte">
+                        <i class="fa-solid fa-bell"></i> <span class="badge hidden">0</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="view active">
+                <div class="weather-cards-grid">
+                    <!-- Card Principale -->
+                    <div class="card main-weather">
+                        <div class="temp-display">
+                            <span id="currentTemp">--</span><span class="unit">°C</span>
+                        </div>
+                        <div class="weather-desc">
+                            <i id="weatherIcon" class="fa-solid fa-cloud"></i>
+                            <span id="weatherText">Caricamento...</span>
+                        </div>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <i class="fa-solid fa-wind"></i>
+                                <span id="windSpeed">-- km/h</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa-solid fa-droplet"></i>
+                                <span id="humidity">--%</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa-solid fa-gauge-high"></i>
+                                <span id="pressure">-- hPa</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Previsioni Giornaliere -->
+                    <div class="card forecast-card">
+                        <h3><i class="fa-regular fa-calendar-days"></i> Prossimi 5 Giorni</h3>
+                        <div id="dailyForecast" class="forecast-list">
+                            <!-- Inserito via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Previsioni Orarie -->
+                    <div class="card hourly-card">
+                        <h3><i class="fa-regular fa-clock"></i> Prossime 24 Ore</h3>
+                        <div id="hourlyForecast" class="hourly-scroll">
+                            <!-- Inserito via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map View -->
+            <div id="view-map" class="view">
+                <div class="map-controls">
+                    <button class="layer-btn active" data-layer="temp">🌡️ Temp</button>
+                    <button class="layer-btn" data-layer="wind">💨 Vento</button>
+                    <button class="layer-btn" data-layer="rain">🌧️ Pioggia</button>
+                </div>
+                <div id="mapContainer"></div>
+            </div>
+
+            <!-- Alerts View -->
+            <div id="view-alerts" class="view">
+                <h2>Allerte Meteo Attive</h2>
+                <div id="alertsList" class="alerts-container">
+                    <p>Nessuna allerta attiva al momento.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+
+</html>
